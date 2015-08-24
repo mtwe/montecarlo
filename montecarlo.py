@@ -51,14 +51,14 @@ class MonteCarlo(object):
         total_scores_square = 0.0
         self.scores_list =[]
         
-        for i in range(self.num_runs):
-            score = next(self.mc_sample)
-            self.scores_list.append(score)
+        for i in range(self.num_runs): #runs the specified number of Monte Carlo samples
+            score = next(self.mc_sample) #next score
+            self.scores_list.append(score) 
             total_scores += score
             total_scores_square += score**2
 
-        self.xhat = total_scores / self.num_runs
-        self.x2hat = total_scores_square / self.num_runs
+        self.xhat = total_scores / self.num_runs #mean of score
+        self.x2hat = total_scores_square / self.num_runs #mean of score^2
 
         self.sample_variance = (self.num_runs / (self.num_runs - 1.0)) * (self.x2hat - (self.xhat**2))
         self.sample_stddev = np.sqrt(self.sample_variance)
@@ -74,7 +74,7 @@ class MonteCarlo(object):
         print("estimate: {:6f}".format(self.xhat))
         print("std dev : {:6f}".format(self.mean_stddev))
         print("variance: {:6f}".format(self.mean_variance))
-        print("% error : {:.2f} %".format(self.mean_stddev / self.xhat * 100))
+        print("% error : {:.2f} %".format(self.mean_stddev / self.xhat * 100)) #% error in estimate of mean approx = std deviation of mean estimate/mean estimate
         print("-"*32)
         print("Distribution\n")
         print("std dev : {:6f}".format(self.sample_stddev))
@@ -82,6 +82,7 @@ class MonteCarlo(object):
         print("max : {}".format(max(self.scores_list)))
         print("min : {}".format(min(self.scores_list)))
         print()
+    
     def plot_histogram(self,ax=None,**kwargs):
         """
         Plots a histogram of the score, along with the mean.
@@ -93,19 +94,18 @@ class MonteCarlo(object):
             ax = fig.add_subplot(111)
         probs,bins,patches = ax.hist(self.scores_list,normed=True,label="Sample",**kwargs)
         ax.vlines(self.xhat,*ax.get_ylim(),label='Mean',color='r')
+        ax.legend()
         return ax,probs,bins
-
 
     def __call__(self):
         self.run()
         
-
     def __repr__(self):
         return "subroutine: {}\nNumRuns: {}".format(self.mc_sample.__name__,self.num_runs)
 
 class MultiMonteCarlo(MonteCarlo):
     """class to run a Monte Carlo simulation where the subroutine returns a list of values
-    Inherits from the single output MonteCarlo class
+    Inherits from the single output MonteCarlo class. Child class of MonteCarlo class
     :param mc_sample: an instantiated generator that yields a list of Monte Carlo score
         Ex: each iteration of mc_sample generator yields a list of scores for different variables, [var1, var2, ...]
     :param degree: Controls how many Monte Carlo runs to do. Will run 10^(degree) runs. 
