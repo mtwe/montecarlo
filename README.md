@@ -5,6 +5,8 @@ A python3 library to run and analyze simple Monte Carlo routines. Some basic tex
   * class MonteCarlo: Used to run, score, and analyze a Monte Carlo routine that scores a *single* value
   * class MultiMonteCarlo: Used to run, score, and analyze a Monte Carlo routine that scores *multiple* values
 
+**sampling.py:** functions for Monte Carlo sampling techniques
+
 **example1.py:** basic example shows how to run a Monte Carlo simulation of the output of a random number generator
 
 **pi_example.py:** example estimation of the value of pi by 'throwing darts' randomly at a circle
